@@ -1,8 +1,5 @@
 service:
   name: assignment2
-# app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
 
 custom:
   webpack:
@@ -17,6 +14,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: us-east-1
+  endpointType: EDGE #| REGIONAL | PRIVATE
   stage: ${opt:stage, 'dev'}
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
@@ -30,19 +28,25 @@ functions:
       - http:
           method: get
           path: hello
-          integration: lambda #disable proxy integration
+          integration: lambda #disables proxy integration
           cors: true
-          passThrough: WHEN_NO_MATCH
           request:
+            passThrough: WHEN_NO_MATCH
             template:
               application/json: ${file(./body-mapping.json.config)}
+            schema:
+              application/json: ${file(compare-data.json)}
           response:
             headers:
               Access-Control-Allow-Origin: "'*'"
+            template:
+              application/json: ${file(./body-mapping.json.config)}
             statusCodes:
-              400:
-                pattern: '.*wrong.*'
-                template:
-                  application/json: >
-                    #set ($errorMessageObj = $input.path('$.errorMessage'))
-                    $errorMessageObj
+              200:
+                pattern: ''
+              # 400:
+              #   pattern: '.*wrong.*'
+              #   template:
+              #     application/json: >
+              #       #set ($errorMessageObj = $input.path('$.errorMessage'))
+              #       $errorMessageObj
