@@ -32,15 +32,15 @@ functions:
           cors: true
           request:
             passThrough: WHEN_NO_MATCH
-            template:
-              application/json: ${file(./body-mapping.json.config)}
-            schema:
-              application/json: ${file(compare-data.json)}
+            # template:
+            #   application/json: ${file(./body-mapping.json.config)}
+            # schema:
+            #   application/json: ${file(compare-data.json)}
           response:
             headers:
               Access-Control-Allow-Origin: "'*'"
-            template:
-              application/json: ${file(./body-mapping.json.config)}
+            # template:
+            #   application/json: ${file(./body-mapping.json.config)}
             statusCodes:
               200:
                 pattern: ''
