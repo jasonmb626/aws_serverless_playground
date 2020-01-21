@@ -30,6 +30,11 @@ functions:
           path: hello
           integration: lambda #disables proxy integration
           cors: true
+          # authorizer:
+          #   name: authorizer
+          #   arn: arn:aws:cognito-idp:us-east-1:123456789:userpool/us-east-1_XXXXXX
+          #   claims:
+          #     - email
           request:
             passThrough: WHEN_NO_MATCH
             # template:
